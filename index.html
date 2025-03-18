@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wouter Kabouter: Frikandel Vangen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    h1 {
+      color: #4CAF50;
+    }
+    .game-container {
+      margin: 20px auto;
+      padding: 10px;
+      border: 2px solid #4CAF50;
+      background-color: white;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 10px;
+    }
+    .game-message {
+      font-size: 20px;
+      margin-top: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welkom bij Wouter Kabouter: Frikandel Vangen!</h1>
+  <div class="game-container">
+    <p>In dit spel vang je frikandellen die uit de lucht vallen! Zorg ervoor dat je er zoveel mogelijk vangt voordat je al je levens verliest.</p>
+    <div id="gameCanvas">
+      <!-- Hier komt je game-canvas of spelinvoer -->
+    </div>
+    <p class="game-message">Druk op de startknop om te beginnen!</p>
+    <button onclick="startGame()">Start Spel</button>
+  </div>
+
+  <script src="game.js"></script> <!-- Zorg ervoor dat je de juiste pad naar je gamebestand gebruikt -->
+  <script>
+    function startGame() {
+      // Hier kun je de logica toevoegen om je game te starten
+      alert("Het spel begint nu!");
+    }
+  </script>
+</body>
+</html>
