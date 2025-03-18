@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wouter Kabouter - Frikandel Vangen</title>
+    <style>
+        body { text-align: center; background-color: #f4a261; }
+        canvas { background-color: #264653; display: block; margin: auto; }
+        .controls { margin-top: 20px; }
+        button { font-size: 20px; padding: 10px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Wouter Kabouter - Frikandel Vangen</h1>
+    <canvas id="gameCanvas"></canvas>
+    <div class="controls">
+        <button id="leftButton">⬅️</button>
+        <button id="rightButton">➡️</button>
+    </div>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = 400;
+        canvas.height = 600;
+        
+        let player = { x: 180, y: 550, width: 40, height: 40 };
+        let frikandellen = [];
+        let score = 0;
+        let lives = 5;
+        let speed = 1;
+        const maxLives = 10;
+        let gameOver = false;
+        const moveSpeed = 20;
+        
+        document.getElementById("leftButton").addEventListener("click", () => {
+            if (player.x > 0) player.x -= moveSpeed;
+        });
+        
+        document.getElementById("rightButton").addEventListener("click", () => {
+            if (player.x < canvas.width - player.width) player.x += moveSpeed;
+        });
+        
+        function spawnFrikandel() {
+            if (!gameOver) {
+                frikandellen.push({ x: Math.random() * (canvas.width - 20), y: 0, width: 20, height: 50 });
+            }
+        }
+        
+        function update() {
+            if (gameOver) return;
+            
+            frikandellen.forEach((f, index) => {
+                f.y += speed;
+                
+                if (f.y + f.height > player.y && f.x < player.x + player.width && f.x + f.width > player.x) {
+                    frikandellen.splice(index, 1);
+                    score++;
+                    if (score % 10 === 0 && lives < maxLives) {
+                        lives++;
+                        alert("Goed bezig köttel!");
+                    }
+                } else if (f.y > canvas.height) {
+                    frikandellen.splice(index, 1);
+                    lives -= 0.5;
+                }
+            });
+            
+            if (lives <= 0) {
+                lives = 0;
+                gameOver = true;
+                setTimeout(() => {
+                    alert("Game Over! Je score: " + score);
+                    setTimeout(() => {
+                        document.location.reload();
+                    }, 3000);
+                }, 500);
+            }
+            
+            speed = 1 + 0.5 * Math.floor(score / 20);
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "red";
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            
+            ctx.fillStyle = "brown";
+            frikandellen.forEach(f => ctx.fillRect(f.x, f.y, f.width, f.height));
+            
+            ctx.fillStyle = "white";
+            ctx.font = "20px Arial";
+            ctx.fillText("Score: " + score, 10, 20);
+            ctx.fillText("Levens: " + lives, 10, 50);
+            
+            if (gameOver) {
+                ctx.fillStyle = "black";
+                ctx.font = "30px Arial";
+                ctx.fillText("GAME OVER", canvas.width / 2 - 80, canvas.height / 2);
+            }
+        }
+        
+        function gameLoop() {
+            update();
+            draw();
+            if (!gameOver) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+        
+        setInterval(spawnFrikandel, 1000);
+        gameLoop();
+    </script>
+</body>
+</html>
